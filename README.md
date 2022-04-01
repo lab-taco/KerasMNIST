@@ -55,3 +55,7 @@ imread:
 
 disable "cpu_feature_guard":  
 `export TF_CPP_MIN_LOG_LEVEL=2`
+
+## Reference
+
+This implementation is developed based on [EN10/KerasMNIST](https://github.com/EN10/KerasMNIST).
