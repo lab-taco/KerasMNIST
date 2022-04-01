@@ -1,6 +1,49 @@
 import argparse
 import numpy as np
+import cv2
 from tensorflow.keras.models import load_model
+
+def get_pad_len(array, from_back=False):
+    # Count padding pixels.
+    pad_val = 0
+    pad_len = 0
+    if from_back:
+        array = np.flip(array)
+    for val in array:
+        if val != pad_val:
+            break
+        pad_len += 1
+    return pad_len
+
+def rm_padding(np_img):
+    #np_img = np_img.squeeze(-1)
+    h_img = np_img.shape[0]
+    w_img = np_img.shape[1]
+    sum_across_w = np_img.sum(axis=1) # summation across width
+    sum_across_h = np_img.sum(axis=0) # summation across height
+
+    pad_top = get_pad_len(sum_across_w)
+    pad_bottom = get_pad_len(sum_across_w, from_back=True)
+    pad_left = get_pad_len(sum_across_h)
+    pad_right = get_pad_len(sum_across_h, from_back=True)
+
+    np_img = np_img[pad_top:(h_img-pad_bottom),pad_left:(w_img-pad_right)]
+
+    h_img_cropped = np_img.shape[0]
+    w_img_cropped = np_img.shape[1]
+
+    if h_img_cropped > w_img_cropped:
+        pad = h_img_cropped - w_img_cropped
+        pad_L = pad // 2
+        pad_R = pad_L + (pad % 2)
+        np_img = np.pad(np_img, pad_width=((0,0),(pad_L,pad_R)), mode='constant')
+    else:
+        pad = w_img_cropped - h_img_cropped
+        pad_T = pad // 2
+        pad_B = pad_T + (pad % 2)
+        np_img = np.pad(np_img, pad_width=((pad_T,pad_B),(0,0)), mode='constant')
+
+    return np_img
 
 def img2np(img_path, pad_width=4, h_img=28, w_img=28, rm_pad=True):
     #h_img = w_img = 28
