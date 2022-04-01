@@ -35,14 +35,14 @@ Keras Documentation:
 
 ## Install
 Tensorflow:
-    
+
     sudo pip install -U pip  
-    sudo pip install tensorflow 
+    sudo pip install tensorflow
 
 Keras:  
 
-    sudo apt update 
-    sudo apt install python-dev 
+    sudo apt update
+    sudo apt install python-dev
     sudo pip install keras
 
 Save Model:
@@ -51,7 +51,7 @@ Save Model:
 
 imread:
 
-    sudo pip install pillow 
+    sudo pip install pillow
 
 disable "cpu_feature_guard":  
 `export TF_CPP_MIN_LOG_LEVEL=2`
